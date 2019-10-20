@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from './KH.png';
 import Car from './car.jpg';
-import Cover from './CV2.png';
+import Cover from './CV.png';
 import loadImages from './images';
 import loadValues from './images';
 
@@ -137,48 +137,47 @@ tryme(env)
 		<div className="column">
 	    		<div className="row">
  			
-			 
+			<p> 
 		  		<img id="img" src={this.state.images[this.state.index]} onClick= {this.changeMe.bind(this)} />
 	    	  		<img id="other" src={this.state.images[1]} onClick= {this.changeMe.bind(this)} /> 
 	    	 		<img id="A3" src={this.state.images[2]} onClick= {this.changeMe.bind(this)} />
 		  
-			
+			</p>
 	    		</div>
 
 	    		<div className="row">
-			
+			<p>
 	    			<img id="A4" src={this.state.images[3]} onClick= {this.changeMe.bind(this)} />
 	    			<img id="A5" src={this.state.images[4]} onClick= {this.changeMe.bind(this)} />
 	    			<img id="A6" src={this.state.images[5]} onClick= {this.changeMe.bind(this)} />
-	    		
+	    		</p>
 	    		</div>
 		</div>
 
-	    	<div className="column" align="center">
+	    	<div className="column">
 	    		<div className="row">
-	   		 <p>
-	    			<img id="cover" src={Cover}/>
+	    		<p>
+				<img id="cov" src={Cover} />
 	    		</p>
 	    		</div>
-
 	    		< div className="row">
 	    			
 	    		</div>
-	    	</div> 
+	    	</div>
 
 	    	<div className="column">
 	    		<div className="row">
-	    		
+	    		<p>
 	    			<img id="B1" src={this.state.images[0]} onClick= {this.changeMe.bind(this)}/>
 	    			<img id="B2" src={this.state.images[6]} onClick= {this.changeMe.bind(this)} />
 	    			<img id="B3" src={this.state.images[7]} onClick= {this.changeMe.bind(this)} />
-	    		
+	    		</p>
 	    		</div>
 
-	    		<div className="row">
-	    			<img id="B4" src={this.state.images[0]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B5" src={this.state.images[1]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B6" src={this.state.images[2]} onClick= {this.changeMe.bind(this)} />
+	    		<div>
+	    			<img id="B4" src={this.state.images[8]} onClick= {this.changeMe.bind(this)} />
+	    			<img id="B5" src={this.state.images[9]} onClick= {this.changeMe.bind(this)} />
+	    			<img id="B6" src={this.state.images[10]} onClick= {this.changeMe.bind(this)} />
 	    		</div>
 	    	</div>
     	</div>

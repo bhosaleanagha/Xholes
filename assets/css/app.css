@@ -2,3 +2,31 @@
 
 
 @import "~milligram/dist/milligram";
+
+.row > p {
+    padding-top: 10ex;
+    padding-left: 2ex;
+    text-align: center;
+}
+
+.column > p {
+    padding-top: 10ex;
+    text-align: center;
+}
+
+
+
+/*
+.column {
+
+    display: grid;
+    grid-gap: 10px;
+    grid-columns: 3px; 
+
+
+}
+
+.img {
+	width : 100px;
+}
+*/

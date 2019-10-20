@@ -11,11 +11,17 @@ import JH from './JH.png';
 import JD from './JD.png';
 
 
-//const images = [AH, KH, QH, JH, AS, KS, QS, AD, KD, QD, JD];
-const images = [{id:0, img:{KH} }]
+const images = [AH, KH, QH, JH, AS, KS, QS, AD, KD, QD, JD];
+//const images = [{id:0, img:{KH} }]
+const values = [1,0,12,11,1,0,12,1,0,12,1,0,12,11];
+
 function loadImages() {
 
 	return images;
+}
+
+function loadValues() {
+	return values;
 }
 
 export default loadImages;
