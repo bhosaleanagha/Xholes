@@ -5,8 +5,14 @@
 
 .row > p {
     padding-top: 10ex;
-    padding-left: 2ex;
+    padding-left: 5ex;
     text-align: center;
+}
+
+.row > em {
+
+   padding-top: 0ex;
+   padding-left: 12ex; 
 }
 
 .column > p {

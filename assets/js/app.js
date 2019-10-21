@@ -14,7 +14,7 @@ import "phoenix_html"
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
+import socket from "./socket"
 //
 //
 import xholes_init from "./xholes";
@@ -22,6 +22,9 @@ import xholes_init from "./xholes";
 window.addEventListener("load", (_ev) => {
   let root = document.getElementById('root');
   if (root) {
-    xholes_init(root);
+	let channel = socket.channel("game:" + window.gameName ,{});
+	  console.log(window.gameName);
+    xholes_init(root,channel);
   }
 });
+
