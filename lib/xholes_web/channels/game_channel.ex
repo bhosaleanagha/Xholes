@@ -21,6 +21,8 @@ defmodule XholesWeb.GameChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
+ name = socket.assigns[:name]	
+    GameServer.chat(name)
     broadcast!(socket, "new_msg", %{body: body})
     {:noreply, socket}
   end

@@ -46,6 +46,7 @@ class Xholes extends React.Component {
 		  deckCount: 0,
 		  drawn: 0,
 		  turn: 0,
+		  chat: ""
 	  }
 	this.channel.join()
                 .receive("ok", this.new_view.bind(this))
@@ -206,6 +207,29 @@ tryme(env)
 	  
 	  }
   }
+  
+on_chat(env){
+console.log("i m in onchat");
+let chatInput         = document.querySelector("#chat-input")
+let messagesContainer = document.querySelector("#messages")
+console.log(env.target.value);
+chatInput.addEventListener("keypress", event => {
+console.log(chatInput.value)
+  if(event.keyCode === 13){
+    this.channel.push("new_msg", {body: chatInput.value})
+    chatInput.value = ""
+  }
+});
+
+this.channel.on("new_msg", payload => {
+	console.log(payload)
+  let messageItem = document.createElement("li")
+  messageItem.innerText = `[${Date()}] ${payload.body}`
+  messagesContainer.appendChild(messageItem)
+});
+
+
+}
 
 
  try_me(ev) {
@@ -299,7 +323,9 @@ tryme(env)
     	<div className="row">
 	    <h1>New Row</h1>
 	</div>
-
+		<div id="column">
+		<ChatInput on_chat={this.on_chat.bind(this)} />
+		</div>
 	</div>
     );
 
@@ -312,4 +338,11 @@ render() {
   }
 }
 
+function ChatInput(params) {
+  let {on_chat} = params;
+  return (<div id="messages">
+    <p><b>Chat Box</b></p>
+    <p><input id ="chat-input" type="text" value="" onChange={on_chat} /></p>
+  </div>);
+}
 

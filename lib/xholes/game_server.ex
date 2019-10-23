@@ -25,6 +25,10 @@ defmodule Xholes.GameServer do
     GenServer.call(reg(name), {:cardDrawn, name, dc, d, p})
   end
   
+  def chat(name) do
+    GenServer.call(reg(name), {:chat, name})
+  end
+  
   def cvOpen(name, cards1, post1, post2) do
     GenServer.call(reg(name), {:cvOpen, name, cards1, post1, post2})
   end
@@ -65,6 +69,11 @@ def handle_call({:swap, name,cards1, post1, post2, deck1, dp1, dp2}, _from, game
   
   def handle_call({:chnTurn, name, cards1, deck1, turn1 }, _from, game) do
     game = Xholes.Game.chnTurn(game ,cards1 ,cards1, deck1, turn1 )
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+  def handle_call({:chat, name }, _from, game) do
     Xholes.BackupAgent.put(name, game)
     {:reply, game, game}
   end
