@@ -6,6 +6,7 @@ import Cover from './CV2.png';
 import Empty from './MT.png';
 import loadImages from './images';
 import loadValues from './images';
+import $ from 'jquery';
 
 
 
@@ -30,25 +31,43 @@ class Xholes extends React.Component {
 	//	images1[i]=imagelist[i].img;  
 	//	console.log(images1[i]);  
 	 // }
+
 	  this.state = {
-		  index: 0,
 		  curr: 10,
 		  ready: 0,
+		  player1: "ruchit",
+		  player2: "anagha",
 		  images: imagelist,
+		  shuf: [],
+		  cards: [],
+		  deck: [],
 		  ids: values,
 		  prev: "",
-		  deckCount: 12,
-		  turn: 0
+		  deckCount: 0,
+		  drawn: 0,
+		  turn: 0,
 	  }
 	this.channel.join()
-                .receive("ok",this.new_view.bind(this))
+                .receive("ok", this.new_view.bind(this))
                 .receive("error",resp => {console.log("Unable to join",resp);}); 
                 console.log("check");
 
   }
 
-  new_view(env){
-	console.log("in view");
+  new_view(game){
+
+	console.log(game.game);
+	  
+	//this.setState({cards: game.game.cards},{deckCount: game.game.deckCount}, {drawn: game.game.drawn}, ()=> this.tryme(game));
+	this.setState(game.game,() => this.tryme(this));
+	  //var newGame = {game};
+	//console.log("this is the state"+this.state);
+	//for (let [key, value] of Object.entries(game)) {
+  	//console.log(`${key}: ${value}`);
+	//}
+	  console.log(this.state);
+	  //console.log(this.state.turn);
+	  console.log("in view");
 
   }
   componentDidMount() {
@@ -61,149 +80,140 @@ class Xholes extends React.Component {
 
 tryme(env)
 	{
-	console.log(this.state.curr + " " + this.state.index);
+	
+	//this.setState(this.state.cards);
+	console.log("DeckCount: " + this.state.deckCount);
 	}
 
-  showimg(_ev) {
-	  console.log(this.state.images[1].src);
-	  console.log(_ev.target.id);
-	 	
-	  /*
-	  var ele = _ev.target.childNodes;
-	  console.log(ele[0]);
-	  ele[0].src={Car};
-	  */
-	  //_ev.target.src="car.jpg";
-	  var img=document.getElementById("img");
-	  
-	  //console.log(img);
-	  
-	  if(this.state.index!=5) {
-	  	this.setState({index: this.state.index+1});
-  	  }
-	  else {
-		this.setState({index: 0});
-	  }
-	  
-	  
-	  
-	  //var newimg = this.state.images[1];
-	  //console.log(newimg);
-	  //img.src = newimg;
-	  //img.display = 'block';
-	
-	  //_ev.target.innerHTML = _ev.target.id;
-  }
+  
 
   changeMe(evt) {
 	 
 	  console.log(evt.target.alt);
 
 	  if(evt.target.alt === "cover") {
-		  alert("Its a cover");
-		  console.log(evt.target.id);
-		  evt.target.alt = "NC";		 
-		  evt.target.src = this.state.images[7];
+		  
+		  var ind = Number(evt.target.id);
+		  
+		  if(this.state.prev == "") {
+		  	alert("Its a cover");
+		  	console.log(evt.target.id);
+		  	evt.target.alt = "NS";
+		  	//evt.target.src = this.state.images[this.state.shuf[ind]];
+		  	
+		  	
+		  	this.channel.push("cvOpened", {cards: this.state.cards, pos1: ind, pos2: this.state.shuf[ind] })
+			.receive("ok",this.new_view.bind(this));
+			
+			//
+			//this.discard();  
+		  }
+		  
+		  else {
+		  	var newop = this.state.deck[this.state.deckCount];  //
+		    this.channel.push("swap", {cards: this.state.cards, pos1: ind, pos2: newop, deck: this.state.deck, deckPos: this.state.deckCount, newDPos: this.state.shuf[ind]})
+			.receive("ok",this.new_view.bind(this));
+		  	
+		  	//var temp = this.state.images[this.state.shuf[ind]];
+		  	//var old = document.getElementById(this.state.prev);
+		  	//evt.target.src = old.src;
+			//old.src = temp;	
+			//evt.target.alt = "NS";
+			
+			
+		  }
 
 	  }
 
-	  if(evt.target.alt != "NC") {
+	  else if(evt.target.alt != "NS") {
 			
- 	  	if(this.state.prev == "") {
-			  this.setState({prev: evt.target.id});
-	  	}
-
-	  	else {
+ 	  	if(this.state.prev != "") {
+			  
 			  var temp = evt.target.src;
 		  	  var old = document.getElementById(this.state.prev);
 			  //old.src = {temp};
 			  evt.target.src = old.src;
-			  old.src = temp;
-		 	
-			
-			this.setState({prev: ""});
-
-
+			  old.src = temp;			
 
 	  	}
 
 	  }
 
+	  //var disButton = document.getElementById("discard");
+	  //disButton.disabled = false;
+	  //this.discard(this);
+
   }
+
+ openCard(evt) {
+	  var disButton = document.getElementById("discard");
+	  disButton.disabled = true;
+		 
+ }
 
  discard(evt) {
 	
 	 //var play = document.getElementById("P2");
 	 //play.disabled = true;
-
-	 var discarded = document.getElementById("empty");
-	 discarded.src = document.getElementById("deck").src;
-	 var deckCard = document.getElementById("deck");
-	 deckCard.src = Cover;
-
-	 //if(this.state.deckCount == 53) {
-
-		 
-	// }
+	 console.log("disabling P1/P2");
+	 if(this.state.turn === 0) {
+	 console.log("disabling P1");
+	 			var P1 = document.getElementById("PL1");
+	 			P1.disabled = true;
+	 			P1.style.opacity = "0.5";
+	 			var P2 = document.getElementById("PL2");
+	 			P2.disabled = false;
+	 			P2.style.opacity = "1.0";
+	 //$("#P1").addClass("disabledClicks");
+	 //$("#P2").addClass("enableClicks");
 	 
-
+	 }
 	 
-/*return(
-<fieldset disabled>
-<div className="column">
-	    		<div className="row">
-	    		
-	    			<img id="B1" src={this.state.images[0]} onClick= {this.changeMe.bind(this)}/>
-	    			<img id="B2" src={this.state.images[6]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B3" src={this.state.images[7]} onClick= {this.changeMe.bind(this)} />
-	    		
-	    		</div>
-
-	    		<div className="row">
-	    			<img id="B4" src={this.state.images[0]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B5" src={this.state.images[1]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B6" src={this.state.images[2]} onClick= {this.changeMe.bind(this)} />
-	    		</div>
-	    	</div>
-</fieldset>);*/
-
- }
-
-/*
-  columns() {
-	  var imageGrid = [];
-	  var keyimg1;
-	  var keyimmg2;
-	  
-		  imageGrid.push(<img src={this.state.images[this.state.index]} />);
-		  imageGrid.push(<br><br/>);
-		  imageGrid.push(<img src={this.state.images[this.state.curr]} />);
-	  
+	 else {
+	 var P2 = document.getElementById("PL2");
+	 P2.disabled = true;
+	 P2.style.opacity = "0.5";
+	 var P1 = document.getElementById("PL1");
+	 P1.disabled = false;
+	 P1.style.opacity = "1.0";
+	 }
 	
-	  return imageGrid;
+	 console.log(this.state.turn);
+	 this.channel.push("changeTurn", {cards: this.state.cards, deck: this.state.deck, turn: this.state.turn })
+			.receive("ok",this.new_view.bind(this));
+
+		
+	 //var discarded = document.getElementById("empty");
+	 //discarded.src = document.getElementById("deck").src;
+	 //var deckCard = document.getElementById("deck");
+	// deckCard.src = Cover;
+	
+	
+
 
   }
-	*/
 
 
   changeDeck(env) {
-	
-	env.target.src = this.state.images[this.state.deckCount];
-	
-	if(this.state.deckCount!=53) {
-	  this.setState({deckCount: this.state.deckCount+1});
-	}
-	else {
-	  //var deckCard = document.getElementById("deck");
-	  //deckCard.src=	this.state.images[12];
-	  this.setState({deckCount: 12});
-	}
-
-
+		
+	  if(this.state.drawn == 0) {
+	  
+	  	this.channel.push("cardDrawn", {deckCount: this.state.deckCount, drawn: this.state.drawn, prev: "empty" })
+			.receive("ok",this.new_view.bind(this));
+			
+	  	var draw = document.getElementById("empty");
+	  	draw.src = this.state.images[this.state.deck[this.state.deckCount]];
+	  
+	  }
   }
 
 
-  render() {
+ try_me(ev) {
+
+	  let pos2 = this.state.cards[2];
+	  console.log("Try_me:"+ pos2);
+	  
+	
 	  
     return( 
 	    <div>
@@ -220,37 +230,43 @@ tryme(env)
 	    </div>
 
 	    <div className="row">
-		<div className="column">
+	    	
+	    	
+		<div className="column" id="PL1">
+				<fieldset id="P1">
 	    		<div className="row">
  			
 			 
-		  		<img id="A0" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover" />
-	    	  		<img id="A2" src={this.state.images[2]} onClick= {this.changeMe.bind(this)} /> 
-	    	 		<img id="A4" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover" />
+		  			<img id= "0" src={this.state.images[this.state.cards[0]]} onClick= {this.changeMe.bind(this)} alt="cover" />
+	    	  		<img id= "2" src={this.state.images[this.state.cards[2]]} onClick= {this.changeMe.bind(this)} /> 
+	    	 		<img id= "4" src={this.state.images[this.state.cards[4]]} onClick= {this.changeMe.bind(this)} alt="cover" />
 		  
 			
 	    		</div>
 
 	    		<div className="row">
 			
-	    			<img id="A1" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover" />
-	    			<img id="A3" src={this.state.images[3]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="A5" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover" />
+	    			<img id="1" src={this.state.images[this.state.cards[1]]} onClick= {this.changeMe.bind(this)} alt="cover" />
+	    			<img id="3" src={this.state.images[this.state.cards[3]]} onClick= {this.changeMe.bind(this)} />
+	    			<img id="5" src={this.state.images[this.state.cards[5]]} onClick= {this.changeMe.bind(this)} alt="cover" />
 	    		
 	    		</div>
+	    		</fieldset>
 		</div>
-
+		
 	    	<div className="column" align="center">
+	    	
 	    		<div className="row">
 	   		 <p>
 	    			<img id="deck" src={Cover} onClick={this.changeDeck.bind(this)}/>
-	    			<img id="empty" src={Empty} />
+	    			<img id="empty" src={this.state.images[this.state.deck[this.state.deckCount]]} alt=""/>
 	    		</p>
 	    		</div>
 
 	    		< div className="row">
 	    		<em>
 	    			<button id="discard" onClick={this.discard.bind(this)}>Discard</button>
+	    			<button id="open card" onClick={this.openCard.bind(this)}>Open Card</button>
 	    		</em>
 	    		</div>
 	    			
@@ -259,20 +275,20 @@ tryme(env)
 		
 
 		   	
-	    	<div className="column">
+	    	<div className="column" id="PL2">
 	    	<fieldset id="P2">
 	    		<div className="row">
 	    		
-	    			<img id="B0" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover"/>
-	    			<img id="B2" src={this.state.images[8]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B4" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    			<img id="6" src={this.state.images[this.state.cards[6]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    			<img id="8" src={this.state.images[this.state.cards[8]]} onClick= {this.changeMe.bind(this)} />
+	    			<img id="10" src={this.state.images[this.state.cards[10]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
 	    		
 	    		</div>
 
 	    		<div className="row">
-	    			<img id="B1" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover"/>
-	    			<img id="B3" src={this.state.images[9]} onClick= {this.changeMe.bind(this)} />
-	    			<img id="B5" src={Cover} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    			<img id="7" src={this.state.images[this.state.cards[7]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    			<img id="9" src={this.state.images[this.state.cards[9]]} onClick= {this.changeMe.bind(this)} />
+	    			<img id="11" src={this.state.images[this.state.cards[11]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
 	    		</div>
 	    	</fieldset>
 	    	</div> 
@@ -287,6 +303,12 @@ tryme(env)
 	</div>
     );
 
+}
+
+render() {
+	return <div className="row">
+	{this.try_me()}
+	</div>
   }
 }
 

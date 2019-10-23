@@ -18,13 +18,14 @@ import socket from "./socket"
 //
 //
 import xholes_init from "./xholes";
-
+import "./xholes"
 window.addEventListener("load", (_ev) => {
   let root = document.getElementById('root');
   if (root) {
-	let channel = socket.channel("game:" + window.gameName ,{});
+	let channel = socket.channel("game:" + window.gameName , window.playerName);
+	  console.log("game:" + window.gameName + window.gamePlayer);
 	  console.log(window.gameName);
+	  console.log(window.playerName);
     xholes_init(root,channel);
   }
 });
-

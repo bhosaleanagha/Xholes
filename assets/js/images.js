@@ -51,8 +51,10 @@ import MD from './QD.png';
 import MS from './QS.png';
 import MC from './QC.png';
 import WC from './WC.png';
+import CV from './CV2.png';
+import MT from './MT.png';
 
-const images = [AH,AD,AS,AC,BH,BD,BS,BC,CH,CD,CS,CC,DH,DD,DS,DC,EH,ED,ES,EC,FH,FD,FS,FC,GH,GD,GS,GC,HH,HD,HS,HC,IH,ID,IS,IC,JH,JD,JS,JC,KH,KD,KS,KC,LH,LD,LS,LC,MH,MD,MS,MC,WC];
+const images = [AH,AD,AS,AC,BH,BD,BS,BC,CH,CD,CS,CC,DH,DD,DS,DC,EH,ED,ES,EC,FH,FD,FS,FC,GH,GD,GS,GC,HH,HD,HS,HC,IH,ID,IS,IC,JH,JD,JS,JC,KH,KD,KS,KC,LH,LD,LS,LC,MH,MD,MS,MC,WC,CV,MT];
 //const images = [{id:0, img:{KH} }]
 const values = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,-5];
 

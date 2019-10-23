@@ -1,6 +1,23 @@
-<div class="row">
-  <div class="column">
-    <h1 id="index-page">Join a Memory Game</h1>
-    <p><a href="/xholes/demo">Join "demo"</a></p>
+<div class="row">                                                                                                                                            
+  <div class="column">                                                                                                                                       
+    <h1 id="index-page">Join a Game</h1>
+        <div id="messages"></div>
+        Name:<br>
+        <input id="name" type="text"></input><br>
+        Enter the table name:<br>
+        <input id="tablename" type="text"></input><br>
+        <button id = "btn" type=submit onclick="myFunction()">Submit</button>
+	<a id = "b" >clickme</a>	
+	<script>
+	function myFunction(){
+	var x = document.getElementById("name").value;
+	var y = document.getElementById("tablename").value;
+	console.log(x);
+	var z =  "/xholes/"+y+"/"+x;
+	console.log(z);
+	document.getElementById("b").setAttribute("href",z);}
+	console.log(document.getElementById("b"));	
+	</script>
   </div>
 </div>
+

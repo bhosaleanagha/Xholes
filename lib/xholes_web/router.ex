@@ -17,7 +17,7 @@ defmodule XholesWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/xholes/:name", PageController, :xholes
+    get "/xholes/:y/:x", PageController, :xholes
 end
 
   # Other scopes may use custom stacks.

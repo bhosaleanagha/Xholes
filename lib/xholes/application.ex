@@ -9,9 +9,11 @@ defmodule Xholes.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      XholesWeb.Endpoint
+      XholesWeb.Endpoint,
       # Starts a worker by calling: Xholes.Worker.start_link(arg)
       # {Xholes.Worker, arg},
+	Xholes.GameSup,
+	Xholes.BackupAgent,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

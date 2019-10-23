@@ -5,7 +5,7 @@ defmodule XholesWeb.PageController do
     render(conn, "index.html")
   end
 
-  def xholes(conn, %{"name" => name}) do
-    render(conn, "xholes.html", name: name)
+  def xholes(conn, %{"x" => x,"y" => y}) do
+    render(conn, "xholes.html", x: x, y: y )
   end
 end
