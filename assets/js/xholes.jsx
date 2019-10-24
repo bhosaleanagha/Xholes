@@ -41,6 +41,10 @@ class Xholes extends React.Component {
 		  drawn: 0,
 		  turn: 0,
 		  discarded: 0,
+		  p1count: 0,
+		  p2count: 0,
+		  p1score: 0,
+		  p2score: 0,
 	  }
 	  
 	 
@@ -82,6 +86,8 @@ class Xholes extends React.Component {
 	 
 	  
 	   var ind = Number(evt.target.id);
+	   var p1_score = 0;
+	   var p2_score = 0;
 
 	  if(evt.target.alt === "cover") {		  
 		  
@@ -90,18 +96,56 @@ class Xholes extends React.Component {
 		  	this.channel.push("cvOpened", {cards: this.state.cards, pos1: ind, pos2: this.state.shuf[ind] })
 			.receive("ok",this.new_view.bind(this));
 			
-			//
-			//this.discard();  
+			
+		  if(ind < 6) {
+		    console.log("P1 score update");
+		  	p1_score = this.state.ids[this.state.shuf[ind]];
+		  	console.log(ind+"ind"+this.state.shuf[ind]);
+		  	
+		  	this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
+		  		.receive("ok",this.new_view.bind(this));
+		  }
+		  
+		  else {
+		    console.log("P2 score update");
+		  	p2_score = this.state.ids[this.state.shuf[ind]];
+		  	console.log(ind+"ind"+this.state.shuf[ind]);
+		  	
+		  	this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
+		  		.receive("ok",this.new_view.bind(this));
+		  }
+			  
 		  }
 		  
 		  else {
 		  
 		    evt.target.alt = "NS";	
-		  	var newop = this.state.deck[this.state.deckCount];  //
+		  	var newop = this.state.deck[this.state.deckCount];  
 		    this.channel.push("swap", {cards: this.state.cards, pos1: ind, pos2: newop, deck: this.state.deck, deckPos: this.state.deckCount, newDPos: this.state.shuf[ind]})
 			.receive("ok",this.new_view.bind(this));
+			
+				if(ind < 6) {
+		    		console.log("P1 score update");
+		  			p1_score = this.state.ids[this.state.deck[this.state.deckCount]];
+		  			//console.log(ind+"ind"+this.state.shuf[ind]);
+		  	
+		  			this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
+		  				.receive("ok",this.new_view.bind(this));
+		  		}
+		  
+		  		else {
+		    		console.log("P2 score update");
+		  			p2_score = this.state.ids[this.state.deck[this.state.deckCount]];
+		  			//console.log(ind+"ind"+this.state.shuf[ind]);
+		  	
+		  			this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
+		  				.receive("ok",this.new_view.bind(this));
+		  		}
 		  				
 		  }
+		  
+		  
+		  
 		  
 		  setTimeout(this.changeTurn.bind(this), 100);  
 
@@ -172,37 +216,69 @@ class Xholes extends React.Component {
 	 var val12 = this.state.ids[this.state.cards[11]];
 	 
 	 if(val1 == val2 && val1!=-1) 
-	 {alert("Col1 Match");
-	  $('#C1').addClass('disabledClicks');
+	 {//alert("Col1 Match");
+	 	if(!document.getElementById("C1").disabled) {
+	  	$('#C1').addClass('disabledClicks');
+	  	val1 = val1*-1;
+	  	this.channel.push("updateScore", {p1score: val1, p2score: 0})
+		  .receive("ok",this.new_view.bind(this));
+	  
+	 	}	
 	 }
 	 
 	 if(val3 == val4 && val3!=-1)
 	 {alert("Col2 Match");
 	 $('#C2').addClass('disabledClicks');
+	 document.getElementById("2").alt="NS";
+	 document.getElementById("3").alt="NS";
 	 }
 	 	
 	 
 	 if(val5 == val6 && val5!=-1)
 	 {alert("Col3 Match");
-	 $('#C3').addClass('disabledClicks');
+	 
+	 	if(!document.getElementById("C3").disabled) {
+	 	$('#C3').addClass('disabledClicks');
+	 
+	  	val5 = val5*-1;
+	  	this.channel.push("updateScore", {p1score: val5, p2score: 0})
+		  .receive("ok",this.new_view.bind(this));
+	 	}	
 	 }
 	 
 	 if(val7 == val8 && val7!=-1)
 	 {alert("Col4 Match");
-	 $('#C4').addClass('disabledClicks');
+	 console.log(document.getElementById("C4").disabled);
+	 if(!document.getElementById("C4").disabled) {
+	  
+	  val7 = val7*-1;
+	  console.log();
+	  $('#C4').addClass('disabledClicks');
+	  this.channel.push("updateScore", {p1score: 0, p2score: val7})
+		  .receive("ok",this.new_view.bind(this));
+		
+	 }
 	 }
 	 
 	 if(val9 == val10 && val9!=-1)
 	 {alert("Col5 Match");
 	 $('#C5').addClass('disabledClicks');
+	 document.getElementById("8").alt="NS";
+	 document.getElementById("9").alt="NS";
 	 }
 	 
 	 if(val11 == val12 && val11!=-1)
 	 {alert("Col6 Match");
+	 console.log(document.getElementById("C6").disabled);
+	 if(!document.getElementById("C6").disabled) {
 	 $('#C6').addClass('disabledClicks');
+	 val11 = val11*-1;
+	 this.channel.push("updateScore", {p1score: 0, p2score: val11})
+		 .receive("ok",this.new_view.bind(this));
+	 
 	 }
-	 
-	 
+	
+	 }
 	 
 	 
 	 if(this.state.drawn == 1) {
@@ -233,7 +309,7 @@ class Xholes extends React.Component {
 		
 	  if(this.state.drawn == 0) {
 	  
-	  	this.channel.push("cardDrawn", {deckCount: this.state.deckCount, drawn: this.state.drawn, prev: "empty" })
+	  	this.channel.push("cardDrawn", {deck: this.state.deck, deckCount: this.state.deckCount, drawn: this.state.drawn, prev: "empty"})
 			.receive("ok",this.new_view.bind(this));
 			
 	  	var draw = document.getElementById("empty");
@@ -271,20 +347,23 @@ class Xholes extends React.Component {
  
 	 var play1 = document.getElementById("P1");
 	 var play2 = document.getElementById("P2");
+	 var deck1 = document.getElementById("deck");
 	 
 	 if(window.playerName == this.state.player1) {
-	 
 	 	play2.disabled = true;
 	 
-	 
 	 	if(this.state.turn==1) {
+	 		deck1.disabled = true;
 	 		 play1.disabled = true;
 	 		 play1.style.opacity = "0.5";
+	 		 deck1.style.opacity = "0.5";
 	 	}
 	 	
 	 	else {
-	 		 play2.disabled = false;
-	 		 play2.style.opacity = "1.0";
+	 		 deck1.disabled = false;
+	 		 play1.disabled = false;
+	 		 play1.style.opacity = "1.0";
+	 		 deck1.style.opacity = "1.0";
 	 	}
 	 
 	 }
@@ -295,13 +374,18 @@ class Xholes extends React.Component {
 	 
 	 	
 	 	if(this.state.turn== 0) {
+	 		 deck1.disabled = true;
+	 		 deck1.style.opacity = "0.5";
 	 		 play2.disabled = true;
 	 		 play2.style.opacity = "0.5";
 	 	}
 	 	
 	 	else {
+	 	console.log("enabling p2");
+	 		 deck1.disabled = false;
 	 		 play2.disabled = false;
 	 		 play2.style.opacity = "1.0";
+	 		 deck1.style.opacity = "1.0";
 	 	}
 	 }
 	 
@@ -363,6 +447,7 @@ class Xholes extends React.Component {
 	    		
 	    		</div>
 	    		</fieldset>
+	    		<p>P1 Score :{this.state.p1score}</p>
 		</div>
 		
 	    	<div className="column" align="center">
@@ -414,16 +499,17 @@ class Xholes extends React.Component {
 	    			
 	    		</div>
 	    	</fieldset>
+	    	<p>P2 Score :{this.state.p2score}</p>
 	    	</div> 
 	    	
 	    	
     	</div>
-    
     	<div className="row">
 	    <h1>New Row</h1>
 	</div>
 		<div id="messages">
-		<input id = "chat-input" type="text" onChange={this.on_chat.bind(this)} />
+		<input id = "chat-input" type="text" />
+		<button>Send</button>
 		</div>
 	</div>
     );

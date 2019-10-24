@@ -32,9 +32,9 @@ defmodule XholesWeb.GameChannel do
     {:noreply, socket}
   end
 
-def handle_in("cardDrawn", %{"deckCount" => dc, "drawn" => d, "prev" => p}, socket) do
+def handle_in("cardDrawn", %{"deck" => d1, "deckCount" => dc, "drawn" => d, "prev" => p}, socket) do
     name = socket.assigns[:name]	
-    game = GameServer.cardDrawn(name,dc,d,p)
+    game = GameServer.cardDrawn(name,d1,dc,d,p)
     broadcast!(socket,"update",%{"game" => Game.client_view(game)})
     {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
 
@@ -82,12 +82,20 @@ def handle_in("cardDrawn", %{"deckCount" => dc, "drawn" => d, "prev" => p}, sock
   end
   
   def handle_in("resetDrawn", %{"drawn"=> drawn1, "deckPos" => dc}, socket) do
-  name = socket.assigns[:name]
+  	name = socket.assigns[:name]
     game = GameServer.resetDrawn(name, drawn1, dc)
     socket = assign(socket, :game, game)
     broadcast!(socket,"update",%{"game" => Game.client_view(game)})
     {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
 
+  end
+  
+  def handle_in("updateScore", %{"p1score" => p1_score, "p2score" => p2_score}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.updateScore(name, p1_score,p2_score)
+    socket = assign(socket, :game, game)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
   end
   
   # Channels can be used in a request/response fashion

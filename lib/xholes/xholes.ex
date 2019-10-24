@@ -21,6 +21,8 @@ defmodule Xholes.Game do
 		prev: "",
 		turn: 0,
 		discarded: 0,
+		p1count: 0,
+		p2count: 0,
         }
   end
 
@@ -47,6 +49,8 @@ defmodule Xholes.Game do
 	  			prev: game.prev,
 	  			turn: game.turn,
 	  			discarded: game.discarded,
+	  			p1count: game.p1count,
+		  		p2count: game.p2count,
         }	  		
   	  	end
   	  end
@@ -54,22 +58,44 @@ defmodule Xholes.Game do
   end
   
 
-  def cardDraw(game, dc, d, p) do
+  def cardDraw(game, d1, dc, d, p) do
+  if dc == 40 do
+  dc = 0
+  IO.puts(dc);
 	%{
-	  p1score: game.p1score,
-	  p2score: game.p2score,
-	  player1: game.player1,
-	  player2: game.player2,
-	  shuf: game.shuf,
-	  cards: game.cards,
-	  deck: game.deck,
-	  drawn: 1,
-	  deckCount: dc+1,
-	  prev: p,
-	  turn: game.turn,
-	  discarded: 0,
-	}
-  
+		p1score: game.p1score,
+	  	p2score: game.p2score,
+	  	player1: game.player1,
+	  	player2: game.player2,
+	  	shuf: game.shuf,
+	  	cards: game.cards,
+	  	deck: game.deck,
+	  	drawn: 1,
+	  	deckCount: dc+1,
+	  	prev: p,
+	  	turn: game.turn,
+	  	discarded: 0,
+	  	p1count: game.p1count,
+		p2count: game.p2count,
+	  	}
+	else
+	%{
+		p1score: game.p1score,
+	  	p2score: game.p2score,
+	  	player1: game.player1,
+	  	player2: game.player2,
+	  	shuf: game.shuf,
+	  	cards: game.cards,
+	  	deck: game.deck,
+	  	drawn: 1,
+	  	deckCount: dc+1,
+	  	prev: p,
+	  	turn: game.turn,
+	  	discarded: 0,
+	  	p1count: game.p1count,
+		p2count: game.p2count,
+	  	}
+	  	end
   end 
   
   
@@ -89,6 +115,8 @@ defmodule Xholes.Game do
 	  prev: game.prev,
 	  turn: game.turn,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   
   end 
@@ -109,6 +137,8 @@ defmodule Xholes.Game do
 	  prev: game.prev,
 	  turn: game.turn,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   
   end
@@ -131,6 +161,8 @@ defmodule Xholes.Game do
 	  prev: game.prev,
 	  turn: turn2,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   
   end  
@@ -151,6 +183,8 @@ defmodule Xholes.Game do
 	  prev: game.prev,
 	  turn: game.turn,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   
   end  
@@ -173,6 +207,8 @@ defmodule Xholes.Game do
 	  prev: "",
 	  turn: game.turn,
 	  discarded: rem(discarded1+1,2),
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
 	
 	else 
@@ -190,6 +226,8 @@ defmodule Xholes.Game do
 	  prev: prev1,
 	  turn: game.turn,
 	  discarded: rem(discarded1+1,2),
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   	   
   	end   
@@ -214,6 +252,29 @@ defmodule Xholes.Game do
 	  prev: prev1,
 	  turn: game.turn,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
+	}
+  
+  end  
+  
+  def updateScore(game, p1_score, p2_score) do
+   
+	%{
+	  p1score: game.p1score + p1_score,
+	  p2score: game.p2score + p2_score,
+	  player1: game.player1,
+	  player2: game.player2,
+	  shuf: game.shuf,
+	  cards: game.cards,
+	  deck: game.deck,
+	  drawn: game.drawn,
+	  deckCount: game.deckCount,
+	  prev: game.prev,
+	  turn: game.turn,
+	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
 	}
   
   end  
@@ -232,6 +293,8 @@ defmodule Xholes.Game do
 	  prev: game.prev,
 	  turn: game.turn,
 	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
         }
  end
 

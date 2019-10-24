@@ -25,8 +25,8 @@ defmodule Xholes.GameServer do
     GenServer.call(reg(name), {:setPlayer, name, p1})
   end
 
-  def cardDrawn(name, dc , d , p) do
-    GenServer.call(reg(name), {:cardDrawn, name, dc, d, p})
+  def cardDrawn(name, d1, dc , d , p) do
+    GenServer.call(reg(name), {:cardDrawn, name, d1, dc, d, p})
   end
   
   def chat(name) do
@@ -56,6 +56,10 @@ defmodule Xholes.GameServer do
   def resetDiscarded(name, discarded1 , prev1) do
     GenServer.call(reg(name), {:resetDiscarded, name, discarded1, prev1})
   end
+  
+  def updateScore(name, p1_score, p2_score) do
+    GenServer.call(reg(name), {:updateScore, name, p1_score, p2_score})
+  end
 
   def peek(name) do
     GenServer.call(reg(name), {:peek, name})
@@ -71,8 +75,8 @@ def handle_call({:setPlayer, name, p1}, _from, game) do
     {:reply, game, game}
   end
 
-def handle_call({:cardDrawn, name, dc, d, p}, _from, game) do
-    game = Xholes.Game.cardDraw(game, dc, d, p)
+def handle_call({:cardDrawn, name, d1, dc, d, p}, _from, game) do
+    game = Xholes.Game.cardDraw(game, d1, dc, d, p)
     Xholes.BackupAgent.put(name, game)
     {:reply, game, game}
   end
@@ -109,6 +113,12 @@ def handle_call({:swap, name,cards1, post1, post2, deck1, dp1, dp2}, _from, game
   
   def handle_call({:resetDiscarded, name, discarded1, prev1}, _from, game) do
     game = Xholes.Game.resetDiscarded(game ,discarded1, prev1 )
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+  def handle_call({:updateScore, name, p1_score, p2_score}, _from, game) do
+    game = Xholes.Game.updateScore(game ,p1_score, p2_score )
     Xholes.BackupAgent.put(name, game)
     {:reply, game, game}
   end
