@@ -15,6 +15,7 @@ defmodule Xholes.BackupAgent do
   end
 
   def get(name) do
+  IO.puts(" i am inside backup");
     Agent.get __MODULE__, fn state ->
       Map.get(state, name)
     end

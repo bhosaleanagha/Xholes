@@ -12,13 +12,29 @@
 .row > em {
 
    padding-top: 0ex;
-   padding-left: 12ex; 
+   padding-left: 5ex; 
 }
 
 .column > p {
     padding-top: 10ex;
     text-align: center;
 }
+
+
+.enableClicks {
+  
+    pointer-events: auto;
+    opacity: 1.0;
+}
+
+
+.disabledClicks {
+    pointer-events: none;
+    opacity: 0.5;
+    background-color: lightgreen;
+}
+
+
 
 
 
