@@ -20,7 +20,7 @@ class Xholes extends React.Component {
       super(props);
       
       const play = window.playerName;  
-      console.log("Player is:" + window.playerName);
+      console.log("Player is: asd" + window.playerName);
 	  this.channel = props.channel;
 	  this.channel.payload = window.playerName;
 	  console.log(this.channel.payload);
@@ -137,7 +137,7 @@ class Xholes extends React.Component {
   changeTurn(evt) {
   	
 
-	 if(this.state.turn === 0) {
+	 /*if(this.state.turn === 0) {
 	 	
 	 	var P1 = document.getElementById("P1");
 	 	P1.disabled = true;
@@ -155,7 +155,7 @@ class Xholes extends React.Component {
 	 	var P1 = document.getElementById("P1");
 	 	P1.disabled = false;
 	 	P1.style.opacity = "1.0";
-	 }
+	 }*/
 	 
 	 var val1 = this.state.ids[this.state.cards[0]];
 	 var val2 = this.state.ids[this.state.cards[1]];
@@ -249,9 +249,9 @@ class Xholes extends React.Component {
 	let messagesContainer = document.querySelector("#messages")
 	console.log(env.target.value);
 	chatInput.addEventListener("keypress", event => {
-	console.log(chatInput.value)
   		if(event.keyCode === 13) {
-    		this.channel.push("new_msg", {body: chatInput.value})
+  		let text = playerName+" : "+chatInput.value
+    		this.channel.push("new_msg", {body: text})
     		chatInput.value = ""
   		}
 	});
@@ -268,18 +268,55 @@ class Xholes extends React.Component {
 
 
  get_Cards(ev) {
-
-	 if(window.playerName == this.state.player1) {
-	 var play2 = document.getElementById("P2");
-	 play2.disabled = true;
-	 }
-	 
-	 else 
-	 if(window.playerName == this.state.player2) {
+ 
 	 var play1 = document.getElementById("P1");
-	 play1.disabled = true;
+	 var play2 = document.getElementById("P2");
+	 
+	 if(window.playerName == this.state.player1) {
+	 
+	 	play2.disabled = true;
+	 
+	 
+	 	if(this.state.turn==1) {
+	 		 play1.disabled = true;
+	 		 play1.style.opacity = "0.5";
+	 	}
+	 	
+	 	else {
+	 		 play2.disabled = false;
+	 		 play2.style.opacity = "1.0";
+	 	}
+	 
 	 }
 	 
+	 
+	 if(window.playerName == this.state.player2) {
+	 	play1.disabled = true;
+	 
+	 	
+	 	if(this.state.turn== 0) {
+	 		 play2.disabled = true;
+	 		 play2.style.opacity = "0.5";
+	 	}
+	 	
+	 	else {
+	 		 play2.disabled = false;
+	 		 play2.style.opacity = "1.0";
+	 	}
+	 }
+	 
+	 var now = window.playerName; 
+	 console.log("now: asd");
+	 
+	 if(window.playerName !== this.state.player1)  {
+	 	if(window.playerName !== this.state.player2) {
+	 			console.log("Ydddddd");
+	 			if(play2!=null)
+	 			{play2.disabled = true;}
+	 			if(play1!=null)
+	 			{play1.disabled = true;}
+	 		}
+	 } 
 	  
 	  
     return( 
@@ -305,22 +342,22 @@ class Xholes extends React.Component {
  					
  					<fieldset id="C1">
 			 		<div className="column">
-		  				<img id= "0" src={this.state.images[this.state.cards[0]]} onClick= {this.changeMe.bind(this)} alt="cover" />
-		  				<img id= "1" src={this.state.images[this.state.cards[1]]} onClick= {this.changeMe.bind(this)} alt="cover" />
+		  				<img id= "0" src={this.state.images[this.state.cards[0]]} onClick = {this.changeMe.bind(this)} alt="cover" />
+		  				<img id= "1" src={this.state.images[this.state.cards[1]]} onClick = {this.changeMe.bind(this)} alt="cover" />
 		  			</div>
 		  			</fieldset>
 		  			
 		  			<fieldset id="C2">
 		  			<div className="column">
-	    	  			<img id= "2" src={this.state.images[this.state.cards[2]]} onClick= {this.changeMe.bind(this)} />
-	    	  			<img id= "3" src={this.state.images[this.state.cards[3]]} onClick= {this.changeMe.bind(this)} /> 
+	    	  			<img id= "2" src={this.state.images[this.state.cards[2]]} onClick = {this.changeMe.bind(this)} />
+	    	  			<img id= "3" src={this.state.images[this.state.cards[3]]} onClick = {this.changeMe.bind(this)} /> 
 	    	  		</div>
 	    	  		</fieldset>
 	    	  		
 	    	  		<fieldset id="C3">
 	    	  		<div className="column">
-	    	 			<img id= "4" src={this.state.images[this.state.cards[4]]} onClick= {this.changeMe.bind(this)} alt="cover" />
-		  				<img id= "5" src={this.state.images[this.state.cards[5]]} onClick= {this.changeMe.bind(this)} alt="cover" />
+	    	 			<img id= "4" src={this.state.images[this.state.cards[4]]} onClick = {this.changeMe.bind(this)} alt="cover" />
+		  				<img id= "5" src={this.state.images[this.state.cards[5]]} onClick = {this.changeMe.bind(this)} alt="cover" />
 					</div>
 	    		    </fieldset>		
 	    		
@@ -356,22 +393,22 @@ class Xholes extends React.Component {
 	    		
 	    			<fieldset id="C4">	
 	    			<div className="column" id="c4">
-	    				<img id= "6" src={this.state.images[this.state.cards[6]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
-	    				<img id= "7" src={this.state.images[this.state.cards[7]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    				<img id= "6" src={this.state.images[this.state.cards[6]]} onClick = {this.changeMe.bind(this)} alt="cover"/>
+	    				<img id= "7" src={this.state.images[this.state.cards[7]]} onClick = {this.changeMe.bind(this)} alt="cover"/>
 	    			</div>
 	    			</fieldset>
 	    			
 	    			<fieldset id="C5">	
 	    			<div className="column" id="c5">
-	    				<img id= "8" src={this.state.images[this.state.cards[8]]} onClick= {this.changeMe.bind(this)} />
-	    				<img id= "9" src={this.state.images[this.state.cards[9]]} onClick= {this.changeMe.bind(this)} />
+	    				<img id= "8" src={this.state.images[this.state.cards[8]]} onClick = {this.changeMe.bind(this)} />
+	    				<img id= "9" src={this.state.images[this.state.cards[9]]} onClick = {this.changeMe.bind(this)} />
 	    			</div>	
 	    			</fieldset>
 	    				
 	    			<fieldset id="C6">	
 	    			<div className="column">
-	    				<img id= "10" src={this.state.images[this.state.cards[10]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
-	    				<img id= "11" src={this.state.images[this.state.cards[11]]} onClick= {this.changeMe.bind(this)} alt="cover"/>
+	    				<img id= "10" src={this.state.images[this.state.cards[10]]} onClick = {this.changeMe.bind(this)} alt="cover"/>
+	    				<img id= "11" src={this.state.images[this.state.cards[11]]} onClick = {this.changeMe.bind(this)} alt="cover"/>
 	    			</div>
 	    			</fieldset>
 	    			
@@ -385,8 +422,8 @@ class Xholes extends React.Component {
     	<div className="row">
 	    <h1>New Row</h1>
 	</div>
-		<div id="column">
-		<ChatInput on_chat={this.on_chat.bind(this)} />
+		<div id="messages">
+		<input id = "chat-input" type="text" onChange={this.on_chat.bind(this)} />
 		</div>
 	</div>
     );
@@ -402,12 +439,6 @@ class Xholes extends React.Component {
   }
 }
 
-  function ChatInput(params) {
-  	let {on_chat} = params;
-  	return ( <div id="messages">
-    			<p><b>Chat Box</b></p>
-    			<p><input id ="chat-input" type="text" value="" onChange={on_chat} /></p>
-  			</div> );
-}
+  
 
 

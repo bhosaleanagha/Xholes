@@ -32,6 +32,22 @@ defmodule Xholes.Game do
   	  else 
   	    if game.player2 == "" do
   	  		Map.put(game, :player2, p1)
+  	  		
+  	  	else
+  	  		%{
+	  			p1score: game.p1score,
+	  			p2score: game.p2score,
+	  			player1: game.player1,
+	  			player2: game.player2,
+	  			shuf: game.shuf,
+	  			cards: game.cards,
+	  			deck: game.deck,
+	  			drawn: game.drawn,
+	  			deckCount: game.deckCount, 
+	  			prev: game.prev,
+	  			turn: game.turn,
+	  			discarded: game.discarded,
+        }	  		
   	  	end
   	  end
   		
