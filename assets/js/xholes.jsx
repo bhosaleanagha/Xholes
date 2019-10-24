@@ -97,25 +97,79 @@ class Xholes extends React.Component {
 			.receive("ok",this.new_view.bind(this));
 			
 			
-		  if(ind < 6) {
-		    console.log("P1 score update");
-		  	p1_score = this.state.ids[this.state.shuf[ind]];
-		  	console.log(ind+"ind"+this.state.shuf[ind]);
-		  	
-		  	this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
-		  		.receive("ok",this.new_view.bind(this));
-		  }
-		  
-		  else {
-		    console.log("P2 score update");
-		  	p2_score = this.state.ids[this.state.shuf[ind]];
-		  	console.log(ind+"ind"+this.state.shuf[ind]);
-		  	
-		  	this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
-		  		.receive("ok",this.new_view.bind(this));
-		  }
+			
+			var currVal = this.state.ids[this.state.shuf[ind]];
+			
+			if(ind%2 == 0) {
+				
+					
+					if(currVal == this.state.ids[this.state.cards[ind+1]]) {
+						currVal = currVal*-1;	
+						
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+								
+			}//even end
+			
+			else 	{
+			
+					if(currVal == this.state.ids[this.state.cards[ind-1]]) {
+						currVal = currVal*-1;	
+						
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+			
+				}//odd-end	
+			
+			
 			  
-		  }
+		  } //cover-open
+		  
+		  
 		  
 		  else {
 		  
@@ -124,25 +178,76 @@ class Xholes extends React.Component {
 		    this.channel.push("swap", {cards: this.state.cards, pos1: ind, pos2: newop, deck: this.state.deck, deckPos: this.state.deckCount, newDPos: this.state.shuf[ind]})
 			.receive("ok",this.new_view.bind(this));
 			
-				if(ind < 6) {
-		    		console.log("P1 score update");
-		  			p1_score = this.state.ids[this.state.deck[this.state.deckCount]];
-		  			//console.log(ind+"ind"+this.state.shuf[ind]);
-		  	
-		  			this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
-		  				.receive("ok",this.new_view.bind(this));
-		  		}
-		  
-		  		else {
-		    		console.log("P2 score update");
-		  			p2_score = this.state.ids[this.state.deck[this.state.deckCount]];
-		  			//console.log(ind+"ind"+this.state.shuf[ind]);
-		  	
-		  			this.channel.push("updateScore", {p1score: p1_score, p2score: p2_score})
-		  				.receive("ok",this.new_view.bind(this));
-		  		}
+				
+			var currVal = this.state.ids[this.state.deck[this.state.deckCount]];
+			
+			if(ind%2 == 0) {
+				
+					
+					if(currVal == this.state.ids[this.state.cards[ind+1]]) {
+						currVal = currVal*-1;	
+						
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+								
+			}
+			
+			else 	{
+			
+					if(currVal == this.state.ids[this.state.cards[ind-1]]) {
+						currVal = currVal*-1;	
+						
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+			
+			}
+				
 		  				
-		  }
+		  } //cover swap
 		  
 		  
 		  
@@ -159,6 +264,88 @@ class Xholes extends React.Component {
  	  		var newop = this.state.deck[this.state.deckCount];
 		    this.channel.push("swap", {cards: this.state.cards, pos1: ind, pos2: newop, deck: this.state.deck, deckPos: this.state.deckCount, newDPos: this.state.cards[ind]})
 			.receive("ok",this.new_view.bind(this));
+			
+			var currVal = this.state.ids[this.state.deck[this.state.deckCount]];
+			var thisVal = this.state.ids[this.state.cards[ind]];
+			
+						
+			if(ind%2 == 0) {
+				
+					
+					if(currVal == this.state.ids[this.state.cards[ind+1]]) {	
+						
+						var newScore = (currVal + this.state.ids[this.state.cards[ind]])*-1;
+						 
+						//currVal = currVal - thisVal;
+						
+						if(ind < 6) {	
+						
+								this.channel.push("updateScore", {p1score: newScore, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: newScore})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						currVal = currVal - thisVal;
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+								
+			}
+			
+			else 	{
+			
+					if(currVal == this.state.ids[this.state.cards[ind-1]]) {
+						var newScore = (currVal + this.state.ids[this.state.cards[ind]])*-1;	
+						console.log("In odd when match");
+						console.log(currVal + " " + this.state.cards[ind]);
+						console.log(newScore);
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: newScore, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: newScore})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					}
+					
+					else {
+					
+						currVal = currVal - thisVal;
+					
+						if(ind < 6) {
+								this.channel.push("updateScore", {p1score: currVal, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+						
+						else {
+								this.channel.push("updateScore", {p1score: 0, p2score: currVal})
+		  							.receive("ok",this.new_view.bind(this));
+						}
+					
+					}
+			
+			}
+			
+			
+			
 			  		
 			setTimeout(this.changeTurn.bind(this), 100);  
 	  	}
@@ -181,25 +368,7 @@ class Xholes extends React.Component {
   changeTurn(evt) {
   	
 
-	 /*if(this.state.turn === 0) {
-	 	
-	 	var P1 = document.getElementById("P1");
-	 	P1.disabled = true;
-	 	P1.style.opacity = "0.5";
-	 	var P2 = document.getElementById("P2");
-	 	P2.disabled = false;
-	 	P2.style.opacity = "1.0";
-	 }
 	 
-	 else {
-	   
-	 	var P2 = document.getElementById("P2");
-	 	P2.disabled = true;
-	 	P2.style.opacity = "0.5";
-	 	var P1 = document.getElementById("P1");
-	 	P1.disabled = false;
-	 	P1.style.opacity = "1.0";
-	 }*/
 	 
 	 var val1 = this.state.ids[this.state.cards[0]];
 	 var val2 = this.state.ids[this.state.cards[1]];
@@ -219,15 +388,15 @@ class Xholes extends React.Component {
 	 {//alert("Col1 Match");
 	 	if(!document.getElementById("C1").disabled) {
 	  	$('#C1').addClass('disabledClicks');
-	  	val1 = val1*-1;
+	  	/*val1 = val1*-1;
 	  	this.channel.push("updateScore", {p1score: val1, p2score: 0})
-		  .receive("ok",this.new_view.bind(this));
+		  .receive("ok",this.new_view.bind(this));*/
 	  
 	 	}	
 	 }
 	 
 	 if(val3 == val4 && val3!=-1)
-	 {alert("Col2 Match");
+	 {
 	 $('#C2').addClass('disabledClicks');
 	 document.getElementById("2").alt="NS";
 	 document.getElementById("3").alt="NS";
@@ -235,14 +404,12 @@ class Xholes extends React.Component {
 	 	
 	 
 	 if(val5 == val6 && val5!=-1)
-	 {alert("Col3 Match");
+	 {//alert("Col3 Match");
 	 
 	 	if(!document.getElementById("C3").disabled) {
 	 	$('#C3').addClass('disabledClicks');
 	 
-	  	val5 = val5*-1;
-	  	this.channel.push("updateScore", {p1score: val5, p2score: 0})
-		  .receive("ok",this.new_view.bind(this));
+	  	
 	 	}	
 	 }
 	 
@@ -254,8 +421,8 @@ class Xholes extends React.Component {
 	  val7 = val7*-1;
 	  console.log();
 	  $('#C4').addClass('disabledClicks');
-	  this.channel.push("updateScore", {p1score: 0, p2score: val7})
-		  .receive("ok",this.new_view.bind(this));
+	  /*this.channel.push("updateScore", {p1score: 0, p2score: val7})
+		  .receive("ok",this.new_view.bind(this));*/
 		
 	 }
 	 }
@@ -267,16 +434,16 @@ class Xholes extends React.Component {
 	 document.getElementById("9").alt="NS";
 	 }
 	 
-	 if(val11 == val12 && val11!=-1)
-	 {alert("Col6 Match");
-	 console.log(document.getElementById("C6").disabled);
-	 if(!document.getElementById("C6").disabled) {
-	 $('#C6').addClass('disabledClicks');
-	 val11 = val11*-1;
-	 this.channel.push("updateScore", {p1score: 0, p2score: val11})
-		 .receive("ok",this.new_view.bind(this));
+	 if(val11 == val12 && val11!=-1) {
+	 	alert("Col6 Match");
+	 	console.log(document.getElementById("C6").disabled);
+	 	if(!document.getElementById("C6").disabled) {
+	 	$('#C6').addClass('disabledClicks');
+	 	/*val11 = val11*-1;
+	 	this.channel.push("updateScore", {p1score: 0, p2score: val11})
+			 .receive("ok",this.new_view.bind(this));*/
 	 
-	 }
+	 	}	
 	
 	 }
 	 
