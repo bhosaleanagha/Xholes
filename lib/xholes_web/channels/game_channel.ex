@@ -98,6 +98,33 @@ def handle_in("cardDrawn", %{"deck" => d1, "deckCount" => dc, "drawn" => d, "pre
     {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
   end
   
+   def handle_in("lastMove", %{"lastMove" => lm,}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.lastMove(name, lm)
+    socket = assign(socket, :game, game)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
+  end
+  
+  def handle_in("openAll", %{"cards" => cards1, "pos1" => p1, "pos2" => p2}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.openAll(name, cards1, p1, p2)
+    socket = assign(socket, :game, game)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
+  end
+  
+  def handle_in("nextRound", %{"round" => round1}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.nextRound(name, round1)
+    socket = assign(socket, :game, game)
+    IO.puts(game.round)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
+  end
+  
+  
+  
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do

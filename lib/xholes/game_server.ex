@@ -60,6 +60,18 @@ defmodule Xholes.GameServer do
   def updateScore(name, p1_score, p2_score) do
     GenServer.call(reg(name), {:updateScore, name, p1_score, p2_score})
   end
+  
+  def lastMove(name, lm) do
+    GenServer.call(reg(name), {:lastMove, name, lm})
+  end
+  
+  def openAll(name, cards1, p1, p2) do
+    GenServer.call(reg(name), {:openAll, name, cards1, p1, p2})
+  end
+  
+  def nextRound(name, round1) do
+    GenServer.call(reg(name), {:nextRound, name, round1})
+  end
 
   def peek(name) do
     GenServer.call(reg(name), {:peek, name})
@@ -119,6 +131,26 @@ def handle_call({:swap, name,cards1, post1, post2, deck1, dp1, dp2}, _from, game
   
   def handle_call({:updateScore, name, p1_score, p2_score}, _from, game) do
     game = Xholes.Game.updateScore(game ,p1_score, p2_score )
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+  def handle_call({:lastMove, name, lm}, _from, game) do
+    game = Xholes.Game.lastMove(game , lm)
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+ 
+  
+  def handle_call({:openAll, name, cards1, p1, p2}, _from, game) do
+    game = Xholes.Game.openAll(game , cards1, p1, p2)
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+   def handle_call({:nextRound, name, round1}, _from, game) do
+    game = Xholes.Game.nextRound(game , round1)
     Xholes.BackupAgent.put(name, game)
     {:reply, game, game}
   end

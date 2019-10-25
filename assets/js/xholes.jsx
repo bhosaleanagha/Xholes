@@ -45,6 +45,8 @@ class Xholes extends React.Component {
 		  p2count: 0,
 		  p1score: 0,
 		  p2score: 0,
+		  lastMove: 0,
+		  round: 1,
 	  }
 	  
 	 
@@ -367,7 +369,6 @@ class Xholes extends React.Component {
 
   changeTurn(evt) {
   	
-
 	 
 	 
 	 var val1 = this.state.ids[this.state.cards[0]];
@@ -385,13 +386,10 @@ class Xholes extends React.Component {
 	 var val12 = this.state.ids[this.state.cards[11]];
 	 
 	 if(val1 == val2 && val1!=-1) 
-	 {//alert("Col1 Match");
+	 {
 	 	if(!document.getElementById("C1").disabled) {
 	  	$('#C1').addClass('disabledClicks');
-	  	/*val1 = val1*-1;
-	  	this.channel.push("updateScore", {p1score: val1, p2score: 0})
-		  .receive("ok",this.new_view.bind(this));*/
-	  
+	 
 	 	}	
 	 }
 	 
@@ -404,17 +402,15 @@ class Xholes extends React.Component {
 	 	
 	 
 	 if(val5 == val6 && val5!=-1)
-	 {//alert("Col3 Match");
-	 
+	 {
 	 	if(!document.getElementById("C3").disabled) {
 	 	$('#C3').addClass('disabledClicks');
-	 
-	  	
+	 	
 	 	}	
 	 }
 	 
 	 if(val7 == val8 && val7!=-1)
-	 {alert("Col4 Match");
+	 {
 	 console.log(document.getElementById("C4").disabled);
 	 if(!document.getElementById("C4").disabled) {
 	  
@@ -428,26 +424,195 @@ class Xholes extends React.Component {
 	 }
 	 
 	 if(val9 == val10 && val9!=-1)
-	 {alert("Col5 Match");
-	 $('#C5').addClass('disabledClicks');
+	 {$('#C5').addClass('disabledClicks');
 	 document.getElementById("8").alt="NS";
 	 document.getElementById("9").alt="NS";
 	 }
 	 
 	 if(val11 == val12 && val11!=-1) {
-	 	alert("Col6 Match");
+	 	
 	 	console.log(document.getElementById("C6").disabled);
 	 	if(!document.getElementById("C6").disabled) {
 	 	$('#C6').addClass('disabledClicks');
-	 	/*val11 = val11*-1;
-	 	this.channel.push("updateScore", {p1score: 0, p2score: val11})
-			 .receive("ok",this.new_view.bind(this));*/
+	 	
 	 
 	 	}	
 	
 	 }
 	 
 	 
+	 if(this.state.turn == 0) {
+	 	
+	 	var card0 = document.getElementById("0");
+	 	var card1 = document.getElementById("1");
+	 	var card4 = document.getElementById("4");
+	 	var card5 = document.getElementById("5");
+	 	
+	 	if(card0.alt == "NS" && card1.alt == "NS" 
+	 	&& card4.alt == "NS"  && card5.alt == "NS") {
+	 		//alert("Last Move for Player2");
+	 		$('#P1').addClass('disabledClicks');
+	 		
+	 		this.channel.push("lastMove", {lastMove: 1})
+			.receive("ok",this.new_view.bind(this));
+	 		
+	 		//set lastMove
+	 	}
+	 
+	 }
+	 
+	 else {
+	 
+	 	var card6 = document.getElementById("6");
+	 	var card7 = document.getElementById("7");
+	 	var card10 = document.getElementById("10");
+	 	var card11 = document.getElementById("11");
+	 	
+	 	if(card6.alt == "NS" && card7.alt == "NS" 
+	 	&& card10.alt == "NS"  && card11.alt == "NS") {
+	 		//alert("Last Move for Player1");
+	 		$('#P2').addClass('disabledClicks');
+	 		
+	 		this.channel.push("lastMove", {lastMove: 1})
+			.receive("ok",this.new_view.bind(this));
+	 	}
+	 
+	 }
+	 
+	 
+	 
+	 if(this.state.lastMove == 1) {
+	 
+	 	if(this.state.turn == 0) {
+	 		
+	 		var card0 = document.getElementById("0");
+	 		var card1 = document.getElementById("1");
+	 		var card4 = document.getElementById("4");
+	 		var card5 = document.getElementById("5");
+	 		var p1s = 0;
+	 		
+	 		if(card0.alt != "NS") {
+	 				card0.src = this.state.images[this.state.shuf[0]];
+	 				card0.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 0, pos2: this.state.shuf[0] })
+						.receive("ok",this.new_view.bind(this));
+	 				p1s = p1s + this.state.ids[this.state.shuf[0]];
+	 		}
+	 		
+	 		if(card1.alt != "NS") {
+	 				card1.src = this.state.images[this.state.shuf[1]];
+	 				card1.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 1, pos2: this.state.shuf[1] })
+						.receive("ok",this.new_view.bind(this));
+	 				p1s = p1s + this.state.ids[this.state.shuf[1]];
+	 		}
+	 		
+	 		if(card4.alt != "NS") {
+	 				card4.src = this.state.images[this.state.shuf[4]];
+	 				card4.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 4, pos2: this.state.shuf[4] })
+						.receive("ok",this.new_view.bind(this));
+	 				p1s = p1s + this.state.ids[this.state.shuf[4]];
+	 		}
+	 		
+	 		if(card5.alt != "NS") {
+	 				card5.src = this.state.images[this.state.shuf[5]];
+	 				card5.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 5, pos2: this.state.shuf[5] })
+			.receive("ok",this.new_view.bind(this));
+	 				p1s = p1s + this.state.ids[this.state.shuf[5]];
+	 		}
+	 		$('#P1').addClass('disabledClicks');
+	 		console.log("Final Score : " + p1s);
+	 		
+	 		this.channel.push("updateScore", {p1score: p1s, p2score: 0})
+		  							.receive("ok",this.new_view.bind(this));
+		  							
+		  							
+		  	$('#P2').removeClass('disabledClicks');
+			$('#P1').removeClass('disabledClicks');	
+			
+			$('#C1').removeClass('disabledClicks');
+			$('#C2').removeClass('disabledClicks');
+			$('#C3').removeClass('disabledClicks');
+			$('#C4').removeClass('disabledClicks');
+			$('#C5').removeClass('disabledClicks');
+			$('#C6').removeClass('disabledClicks');					
+	 		
+	 		this.channel.push("nextRound", {round: this.state.round})
+	 			.receive("ok",this.new_view.bind(this));
+	 	}
+	 	
+	 	else {
+	 		
+	 		var card6 = document.getElementById("6");
+	 		var card7 = document.getElementById("7");
+	 		var card10 = document.getElementById("10");
+	 		var card11 = document.getElementById("11");
+	 		var p2s = 0;
+	 		
+	 		if(card6.alt != "NS") {
+	 				card6.src = this.state.images[this.state.shuf[6]];
+	 				card6.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 6, pos2: this.state.shuf[6] })
+						.receive("ok",this.new_view.bind(this));
+	 				p2s = p2s + this.state.ids[this.state.shuf[6]];
+	 		}
+	 		
+	 		if(card7.alt != "NS") {
+	 				card1.src = this.state.images[this.state.shuf[7]];
+	 				card7.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 7, pos2: this.state.shuf[7] })
+						.receive("ok",this.new_view.bind(this));
+	 				p2s = p2s + this.state.ids[this.state.shuf[7]];
+	 		}
+	 		
+	 		if(card10.alt != "NS") {
+	 				card10.src = this.state.images[this.state.shuf[10]];
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 10, pos2: this.state.shuf[10] })
+						.receive("ok",this.new_view.bind(this));
+					card10.alt= "NS";
+	 				p2s = p2s + this.state.ids[this.state.shuf[10]];
+	 		}
+	 		
+	 		if(card11.alt != "NS") {
+	 				card11.src = this.state.images[this.state.shuf[11]];
+	 				card11.alt= "NS";
+	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 11, pos2: this.state.shuf[11] })
+						.receive("ok",this.new_view.bind(this));
+	 				p2s = p2s + this.state.ids[this.state.shuf[11]];
+	 		}
+	 		$('#P2').addClass('disabledClicks');
+	 		console.log("Final Score : " + p2s);
+	 		
+	 		
+	 		this.channel.push("updateScore", {p1score: 0, p2score: p2s})
+		  		.receive("ok",this.new_view.bind(this));
+		  		
+		  		
+		  		
+		  		
+			setTimeout(this.callMeBack.bind(this), 100);
+			$('#P1').removeClass('disabledClicks');
+			$('#P2').removeClass('disabledClicks');
+			
+			
+			$('#C1').removeClass('disabledClicks');
+			$('#C2').removeClass('disabledClicks');
+			$('#C3').removeClass('disabledClicks');
+			$('#C4').removeClass('disabledClicks');
+			$('#C5').removeClass('disabledClicks');
+			$('#C6').removeClass('disabledClicks');
+				 		
+	 		this.channel.push("nextRound", {round: this.state.round})
+	 			.receive("ok",this.new_view.bind(this));
+	 	}
+	 	
+		return;
+	 	
+	 }
+	 	
+	 	
 	 if(this.state.drawn == 1) {
 	 this.channel.push("resetDrawn", {drawn: this.state.drawn, deckPos: this.state.deckCount})
 			.receive("ok",this.new_view.bind(this));}
@@ -567,6 +732,20 @@ class Xholes extends React.Component {
 	 			if(play1!=null)
 	 			{play1.disabled = true;}
 	 		}
+	 		
+	 	
+	 }
+	 
+	 if(this.state.lastMove == 1) {
+	 
+	 	/*if(this.state.turn == 0 && this.state.player2 == window.playerName) {
+	 		alert("Its Last Move For, " + this.state.player2);
+	 	}
+	 	
+	 	else if(this.state.turn == 1 && this.state.player1 == window.playerName) {
+	 		alert("Its Last Move For you, " + this.state.player1);
+	 	}	*/
+	 		
 	 } 
 	  
 	  
