@@ -67,7 +67,17 @@ class Xholes extends React.Component {
 	 console.log("play1 set to"+this.state.player1);
 	  console.log("in view");
 	  
-
+	  var play1 = document.getElementById("P1");
+	  var play2 = document.getElementById("P2");
+	  console.log("P1->" + play1.disabled);
+	  console.log("P2->" + play2.disabled);
+	  
+	  if(this.state.turn == 0)
+	  {
+	  		console.log(this.state.turn);
+	  		play2.disabled = false;
+	  		console.log("P1->" + play1.disabled);
+	  }
   }
   componentDidMount() {
 		
@@ -388,14 +398,21 @@ class Xholes extends React.Component {
 	 if(val1 == val2 && val1!=-1) 
 	 {
 	 	if(!document.getElementById("C1").disabled) {
-	  	$('#C1').addClass('disabledClicks');
+	  	//$('#C1').addClass('disabledClicks');
+	  	var c1 = document.getElementById("C1");
+	  	C1.disabled = true;
+	  	C1.style.opacity = "0.7";
 	 
 	 	}	
 	 }
 	 
 	 if(val3 == val4 && val3!=-1)
 	 {
-	 $('#C2').addClass('disabledClicks');
+	 //$('#C2').addClass('disabledClicks');
+	 	var c2 = document.getElementById("C2");
+	  	C2.disabled = true;
+	  	C2.style.opacity = "0.7";
+	 
 	 document.getElementById("2").alt="NS";
 	 document.getElementById("3").alt="NS";
 	 }
@@ -404,7 +421,11 @@ class Xholes extends React.Component {
 	 if(val5 == val6 && val5!=-1)
 	 {
 	 	if(!document.getElementById("C3").disabled) {
-	 	$('#C3').addClass('disabledClicks');
+	 		var c3 = document.getElementById("C3");
+	  		C3.disabled = true;
+	  		C3.style.opacity = "0.7";
+	 	
+	 	//$('#C3').addClass('disabledClicks');
 	 	
 	 	}	
 	 }
@@ -414,33 +435,42 @@ class Xholes extends React.Component {
 	 console.log(document.getElementById("C4").disabled);
 	 if(!document.getElementById("C4").disabled) {
 	  
-	  val7 = val7*-1;
-	  console.log();
-	  $('#C4').addClass('disabledClicks');
-	  /*this.channel.push("updateScore", {p1score: 0, p2score: val7})
-		  .receive("ok",this.new_view.bind(this));*/
+	 	var c4 = document.getElementById("C4");
+	  	C4.disabled = true;
+	  	C4.style.opacity = "0.7";
+	  //$('#C4').addClass('disabledClicks');
+	  
 		
 	 }
 	 }
 	 
-	 if(val9 == val10 && val9!=-1)
-	 {$('#C5').addClass('disabledClicks');
+	 if(val9 == val10 && val9!=-1) {
+	 
+	 //$('#C5').addClass('disabledClicks');
+	 	 	var c5 = document.getElementById("C5");
+	  		C5.disabled = true;
+	  		C5.style.opacity = "0.7";
+
+	 
 	 document.getElementById("8").alt="NS";
 	 document.getElementById("9").alt="NS";
 	 }
 	 
 	 if(val11 == val12 && val11!=-1) {
 	 	
-	 	console.log(document.getElementById("C6").disabled);
+	 	//console.log(document.getElementById("C6").disabled);
 	 	if(!document.getElementById("C6").disabled) {
-	 	$('#C6').addClass('disabledClicks');
+	 		 	var c6 = document.getElementById("C6");
+	  			C6.disabled = true;
+	  			C6.style.opacity = "0.7";
+
+	 	//$('#C6').addClass('disabledClicks');
 	 	
-	 
 	 	}	
 	
 	 }
 	 
-	 
+	 if(this.state.lastMove == 0 ) {
 	 if(this.state.turn == 0) {
 	 	
 	 	var card0 = document.getElementById("0");
@@ -451,7 +481,10 @@ class Xholes extends React.Component {
 	 	if(card0.alt == "NS" && card1.alt == "NS" 
 	 	&& card4.alt == "NS"  && card5.alt == "NS") {
 	 		//alert("Last Move for Player2");
-	 		$('#P1').addClass('disabledClicks');
+	 		//$('#P1').addClass('disabledClicks');
+	 		var p1 = document.getElementById("P1");
+	 		p1.disabled = true;
+	 		
 	 		
 	 		this.channel.push("lastMove", {lastMove: 1})
 			.receive("ok",this.new_view.bind(this));
@@ -471,15 +504,16 @@ class Xholes extends React.Component {
 	 	if(card6.alt == "NS" && card7.alt == "NS" 
 	 	&& card10.alt == "NS"  && card11.alt == "NS") {
 	 		//alert("Last Move for Player1");
-	 		$('#P2').addClass('disabledClicks');
-	 		
+	 		//$('#P2').addClass('disabledClicks');
+	 		var p1 = document.getElementById("P1");
+	 		p1.disabled = true;
 	 		this.channel.push("lastMove", {lastMove: 1})
 			.receive("ok",this.new_view.bind(this));
 	 	}
 	 
 	 }
 	 
-	 
+	 }
 	 
 	 if(this.state.lastMove == 1) {
 	 
@@ -522,22 +556,19 @@ class Xholes extends React.Component {
 			.receive("ok",this.new_view.bind(this));
 	 				p1s = p1s + this.state.ids[this.state.shuf[5]];
 	 		}
-	 		$('#P1').addClass('disabledClicks');
+	 		
+	 		//$('#P1').addClass('disabledClicks');
+	 		var p1 = document.getElementById("P1");
+	 		p1.disabled = true;
+	 		
+	 		
 	 		console.log("Final Score : " + p1s);
 	 		
 	 		this.channel.push("updateScore", {p1score: p1s, p2score: 0})
 		  							.receive("ok",this.new_view.bind(this));
 		  							
 		  							
-		  	$('#P2').removeClass('disabledClicks');
-			$('#P1').removeClass('disabledClicks');	
-			
-			$('#C1').removeClass('disabledClicks');
-			$('#C2').removeClass('disabledClicks');
-			$('#C3').removeClass('disabledClicks');
-			$('#C4').removeClass('disabledClicks');
-			$('#C5').removeClass('disabledClicks');
-			$('#C6').removeClass('disabledClicks');					
+		  	
 	 		
 	 		this.channel.push("nextRound", {round: this.state.round})
 	 			.receive("ok",this.new_view.bind(this));
@@ -560,7 +591,7 @@ class Xholes extends React.Component {
 	 		}
 	 		
 	 		if(card7.alt != "NS") {
-	 				card1.src = this.state.images[this.state.shuf[7]];
+	 				card7.src = this.state.images[this.state.shuf[7]];
 	 				card7.alt= "NS";
 	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 7, pos2: this.state.shuf[7] })
 						.receive("ok",this.new_view.bind(this));
@@ -582,7 +613,7 @@ class Xholes extends React.Component {
 						.receive("ok",this.new_view.bind(this));
 	 				p2s = p2s + this.state.ids[this.state.shuf[11]];
 	 		}
-	 		$('#P2').addClass('disabledClicks');
+	 		
 	 		console.log("Final Score : " + p2s);
 	 		
 	 		
@@ -592,24 +623,23 @@ class Xholes extends React.Component {
 		  		
 		  		
 		  		
-			setTimeout(this.callMeBack.bind(this), 100);
-			$('#P1').removeClass('disabledClicks');
-			$('#P2').removeClass('disabledClicks');
+			setTimeout(this.callMeBack.bind(this), 50);
 			
 			
-			$('#C1').removeClass('disabledClicks');
-			$('#C2').removeClass('disabledClicks');
-			$('#C3').removeClass('disabledClicks');
-			$('#C4').removeClass('disabledClicks');
-			$('#C5').removeClass('disabledClicks');
-			$('#C6').removeClass('disabledClicks');
+		
+				 		
+				 		
+			this.readyForNext();
 				 		
 	 		this.channel.push("nextRound", {round: this.state.round})
-	 			.receive("ok",this.new_view.bind(this));
+	 			.receive("ok",this.new_view.bind(this),()=> setTimeout(this.callMeBack.bind(this), 100));
+	 			
+	 			//location.reload();
+	 			
 	 	}
 	 	
-		return;
-	 	
+	
+	 	return;
 	 }
 	 	
 	 	
@@ -622,6 +652,14 @@ class Xholes extends React.Component {
 			.receive("ok",this.new_view.bind(this));
 	 
 			
+  }
+  
+  readyForNext() {
+  		
+  		alert("Will start a new round");
+  		var play1 = document.getElementById("P1");
+  		alert(play1);
+  		
   }
 		
 
@@ -677,11 +715,33 @@ class Xholes extends React.Component {
 
  get_Cards(ev) {
  
+ 
+ 
 	 var play1 = document.getElementById("P1");
 	 var play2 = document.getElementById("P2");
 	 var deck1 = document.getElementById("deck");
 	 
+	 if(this.state.round > 1) {
+	 	
+	 	
+	 	console.log("new round "+document.getElementById("P1"));
+	 	console.log(play1.disabled);
+	 	console.log(play2.disabled);
+	 	if(play1.disabled) {
+	 		console.log("Turn is " + this.state.turn);
+	 		play1.disabled = false;
+	 		console.log(play1.disabled);
+	 		play2.disabled = false;
+	 		console.log(play1.disabled);
+	 	}
+	 	  
+	 	
+	 } 
+	 
+	 
 	 if(window.playerName == this.state.player1) {
+	 		console.log("You're Player1");
+		
 	 	play2.disabled = true;
 	 
 	 	if(this.state.turn==1) {
@@ -702,8 +762,10 @@ class Xholes extends React.Component {
 	 
 	 
 	 if(window.playerName == this.state.player2) {
-	 	play1.disabled = true;
 	 
+	    console.log("You're Player2");
+	 	play1.disabled = true;
+	 		
 	 	
 	 	if(this.state.turn== 0) {
 	 		 deck1.disabled = true;
@@ -735,18 +797,12 @@ class Xholes extends React.Component {
 	 		
 	 	
 	 }
+	 if(play1!=null)
+	 console.log("P1->" + play1.disabled);
+	 if(play2!=null)
+	 console.log("P2->" + play2.disabled);
 	 
-	 if(this.state.lastMove == 1) {
 	 
-	 	/*if(this.state.turn == 0 && this.state.player2 == window.playerName) {
-	 		alert("Its Last Move For, " + this.state.player2);
-	 	}
-	 	
-	 	else if(this.state.turn == 1 && this.state.player1 == window.playerName) {
-	 		alert("Its Last Move For you, " + this.state.player1);
-	 	}	*/
-	 		
-	 } 
 	  
 	  
     return( 
