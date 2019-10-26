@@ -26,7 +26,7 @@ class Xholes extends React.Component {
 	  console.log(this.channel.payload);
 	  const imagelist = loadImages();
 	  const values = loadValues();
-	 
+	  
 	  this.state = {
 		  curr: 10,
 		  player1: "",
@@ -47,6 +47,7 @@ class Xholes extends React.Component {
 		  p2score: 0,
 		  lastMove: 0,
 		  round: 1,
+		  winner: "",
 	  }
 	  
 	 
@@ -401,7 +402,7 @@ class Xholes extends React.Component {
 	  	//$('#C1').addClass('disabledClicks');
 	  	var c1 = document.getElementById("C1");
 	  	C1.disabled = true;
-	  	C1.style.opacity = "0.7";
+	  	C1.style.opacity = "0.4";
 	 
 	 	}	
 	 }
@@ -489,7 +490,7 @@ class Xholes extends React.Component {
 	 		this.channel.push("lastMove", {lastMove: 1})
 			.receive("ok",this.new_view.bind(this));
 	 		
-	 		//set lastMove
+	 		
 	 	}
 	 
 	 }
@@ -568,10 +569,11 @@ class Xholes extends React.Component {
 		  							.receive("ok",this.new_view.bind(this));
 		  							
 		  							
+		setTimeout(this.readyForNext(), 100);	
 		  	
+		  		
 	 		
-	 		this.channel.push("nextRound", {round: this.state.round})
-	 			.receive("ok",this.new_view.bind(this));
+	 			
 	 	}
 	 	
 	 	else {
@@ -609,36 +611,34 @@ class Xholes extends React.Component {
 	 		if(card11.alt != "NS") {
 	 				card11.src = this.state.images[this.state.shuf[11]];
 	 				card11.alt= "NS";
+	 				//var card1 = document.getElementById("1");
+	 				//card1.src = this.state.images[this.state.card[1]];
+	 				
 	 				this.channel.push("openAll", {cards: this.state.cards, pos1: 11, pos2: this.state.shuf[11] })
 						.receive("ok",this.new_view.bind(this));
 	 				p2s = p2s + this.state.ids[this.state.shuf[11]];
+	 				
+	 				
 	 		}
+	 		
 	 		
 	 		console.log("Final Score : " + p2s);
 	 		
 	 		
 	 		this.channel.push("updateScore", {p1score: 0, p2score: p2s})
 		  		.receive("ok",this.new_view.bind(this));
-		  		
-		  		
-		  		
-		  		
-			setTimeout(this.callMeBack.bind(this), 50);
+		  				
+		  	setTimeout(this.readyForNext(), 100);		
+		  				
 			
-			
-		
-				 		
-				 		
-			this.readyForNext();
-				 		
-	 		this.channel.push("nextRound", {round: this.state.round})
-	 			.receive("ok",this.new_view.bind(this),()=> setTimeout(this.callMeBack.bind(this), 100));
 	 			
-	 			//location.reload();
+	 		
+	 	
+	 	
 	 			
 	 	}
 	 	
-	
+	 		
 	 	return;
 	 }
 	 	
@@ -656,9 +656,106 @@ class Xholes extends React.Component {
   
   readyForNext() {
   		
-  		alert("Will start a new round");
-  		var play1 = document.getElementById("P1");
-  		alert(play1);
+  	
+  	
+  	if(this.state.round < 6)	{
+  	
+  	 alert("Moving to next Round. \n Please Reload.");
+	 this.channel.push("nextRound", {round: this.state.round})
+	 	.receive("ok",this.new_view.bind(this));
+	 			
+	 }
+	 
+	 else {
+	 
+	 if(this.state.p1score < this.state.p2score) {
+	 	this.channel.push("winner", {winner: this.state.player1})
+	 		.receive("ok",this.new_view.bind(this));
+	 }
+	 		
+	 else {
+	 	this.channel.push("winner", {winner: this.state.player2})
+	 		.receive("ok",this.new_view.bind(this));
+	 }
+	 	
+	 }
+	 
+	 /*else {
+	 
+	 if(this.state.round == 6) {
+	 		
+	 	if(this.state.p1score > this.state.p2score) {
+	 	
+	 	this.channel.push("winner", {winner: this.state.winner})
+	 		.receive("ok",this.new_view.bind(this));
+	 				
+	 		if(this.state.player1 == window.playerName) {
+	 				
+	 			if (confirm(window.playerName+", you lost.\n Play Again?")) {
+	 						
+	 				alert("playing again!!");
+	 			}
+	 				
+	 			else {self.close();}
+	 				
+	 				
+	 			}
+	 				
+	 		if(this.state.player2 == window.playerName) {
+	 					
+	 			if(confirm("Congratulations " + window.playerName+ "!! You win.\nPlay Again?")) {
+	 				alert("playing again!!");
+	 			}
+	 					
+	 			else {self.close();}
+	 			}
+	 				
+	 			else{
+	 				if(confirm(this.state.player2 + " wins.\n Would you like to play?")) {alert("playing again!!");}
+	 					
+	 				else {self.close();}
+	 			} 
+	 				
+	 				
+	 	}
+	 			
+	 	else {
+	 				
+	 		if(this.state.player1 == window.playerName) {
+	 				
+	 			if(confirm(window.playerName+", you lost.\n Play Again?")) {
+	 				alert("playing again!!");
+	 					
+	 			} 
+	 			else {self.close();}
+	 				
+	 		}
+	 				
+	 		if(this.state.player1 == window.playerName) {
+	 		
+	 			if(confirm("Congratulations " + window.playerName+ "!! You win.\nPlay Again?")) {alert("playing again!!");}
+	 					
+	 			else {self.close();}
+	 		
+	 		}
+	 				
+	 		else{
+	 			if(confirm(this.state.player1 + " wins.\n Would you like to play?")) {alert("playing again!!");}
+	 					
+	 			else {self.close();}
+	 		} 
+	 				
+	 				
+	 		} 
+	 		
+	 	}
+	 		
+	
+	 
+	 }*/
+	 
+	 
+
   		
   }
 		
@@ -721,22 +818,7 @@ class Xholes extends React.Component {
 	 var play2 = document.getElementById("P2");
 	 var deck1 = document.getElementById("deck");
 	 
-	 if(this.state.round > 1) {
-	 	
-	 	
-	 	console.log("new round "+document.getElementById("P1"));
-	 	console.log(play1.disabled);
-	 	console.log(play2.disabled);
-	 	if(play1.disabled) {
-	 		console.log("Turn is " + this.state.turn);
-	 		play1.disabled = false;
-	 		console.log(play1.disabled);
-	 		play2.disabled = false;
-	 		console.log(play1.disabled);
-	 	}
-	 	  
-	 	
-	 } 
+	 
 	 
 	 
 	 if(window.playerName == this.state.player1) {
@@ -802,7 +884,37 @@ class Xholes extends React.Component {
 	 if(play2!=null)
 	 console.log("P2->" + play2.disabled);
 	 
+	 if(this.state.round > 1) {
+	 	
+	 	//alert("Moving to next Round. \n Please Reload.");
+	 	/*console.log("new round "+document.getElementById("P1"));
+	 	console.log(play1.disabled);
+	 	console.log(play2.disabled);
+	 	if(play1.disabled) {
+	 		console.log("Turn is " + this.state.turn);
+	 		play1.disabled = false;
+	 		console.log(play1.disabled);
+	 		play2.disabled = false;
+	 		console.log(play1.disabled);
+	 	}*/
+	 	
+	 	
+	 	  
+	 	
+	 } 
 	 
+	 
+	 if(this.state.winner != "") {
+	 
+	 
+	 	if(confirm(this.state.winner + "is the winner\nPlay again?"))
+	 	{
+	 		this.channel.push("rejoin", {player: window.playerName})
+			.receive("ok",this.new_view.bind(this));
+             //this.channel.on("update", this.new_view.bind(this));
+	 	}
+	 	
+	 }
 	  
 	  
     return( 
@@ -820,7 +932,7 @@ class Xholes extends React.Component {
 	    </div>
 
 	    <div className="row">
-	    	
+	    		
 	    	
 		<div className="column" id="PL1">
 				<fieldset id="P1">
@@ -849,12 +961,13 @@ class Xholes extends React.Component {
 	    		
 	    		</div>
 	    		</fieldset>
-	    		<p>P1 Score :{this.state.p1score}</p>
+	    		<h3>Score :{this.state.p1score}</h3>
 		</div>
 		
 	    	<div className="column" align="center">
-	    		
+	    		<h2>Round : {this.state.round} / 6</h2>	    		
 	    		<fieldset id="deck">
+	    		
 	    		<div className="row">
 	   		 	<p>
 	    			<img id="deck" src={Cover} onClick={this.changeDeck.bind(this)}/>
@@ -901,13 +1014,13 @@ class Xholes extends React.Component {
 	    			
 	    		</div>
 	    	</fieldset>
-	    	<p>P2 Score :{this.state.p2score}</p>
+	    	<h3>Score :{this.state.p2score}</h3>
 	    	</div> 
 	    	
 	    	
     	</div>
     	<div className="row">
-	    <h1>New Row</h1>
+	    <h1>ChatRoom</h1>
 	</div>
 		<div id="messages">
 		<input id = "chat-input" type="text" />
@@ -919,6 +1032,8 @@ class Xholes extends React.Component {
 }
 
   render() {
+  
+  	
 	return (
 	<div className="row"> {
 	this.get_Cards()

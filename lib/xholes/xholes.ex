@@ -28,6 +28,7 @@ defmodule Xholes.Game do
 		p2score: p2s,
 		lastMove: 0,
 		round: 1,
+		winner: "",
         }
   end
 
@@ -58,7 +59,8 @@ defmodule Xholes.Game do
 		  		p2count: game.p2count,
 		  		ids: game.ids,
 		  		lastMove: game.lastMove,
-		  		round: game.round
+		  		round: game.round,
+		  		winner: ""
         }	  		
   	  	end
   	  end
@@ -88,6 +90,7 @@ defmodule Xholes.Game do
 		ids: game.ids,
 		lastMove: game.lastMove,
 		round: game.round,
+		winner: game.winner
 	  	}
 	else
 	%{
@@ -108,6 +111,7 @@ defmodule Xholes.Game do
 		ids: game.ids,
 		lastMove: game.lastMove,
 		round: game.round,
+		winner: game.winner
 	  	}
 	  	end
   end 
@@ -133,7 +137,8 @@ defmodule Xholes.Game do
 	  p2count: game.p2count,
 	  ids: game.ids,
 	  lastMove: game.lastMove,
-	  round: game.round
+	  round: game.round,
+	  winner: game.winner
 	}
   
   end 
@@ -159,6 +164,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end
@@ -186,6 +192,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end  
@@ -211,6 +218,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end  
@@ -238,6 +246,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
 	
 	else 
@@ -259,7 +268,8 @@ defmodule Xholes.Game do
 	  p2count: game.p2count,
 	  ids: game.ids,
 	  lastMove: game.lastMove,
-	  round: game.round
+	  round: game.round,
+	  winner: game.winner
 	}
   	   
   	end   
@@ -288,7 +298,8 @@ defmodule Xholes.Game do
 	  p2count: game.p2count,
 	  ids: game.ids,
 	  lastMove: game.lastMove,
-	  round: game.round
+	  round: game.round,
+	  winner: game.winner
 	}
   
   end  
@@ -313,6 +324,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end  
@@ -338,6 +350,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: lm,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end  
@@ -362,6 +375,7 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
+	  winner: game.winner
 	}
   
   end 
@@ -392,12 +406,14 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: 0,
 	  round: round1 + 1,
+	  winner: game.winner
 	}
   
   end 
-
-  def client_view(game) do
-        %{
+  
+  
+   def winner(game, winner1) do
+   %{
 	  p1score: game.p1score,
 	  p2score: game.p2score,
 	  player1: game.player1,
@@ -415,7 +431,31 @@ defmodule Xholes.Game do
 	  ids: game.ids,
 	  lastMove: game.lastMove,
 	  round: game.round,
-        }
+	  winner: winner1
+     }
+ end
+
+  def client_view(game) do
+    %{
+	  p1score: game.p1score,
+	  p2score: game.p2score,
+	  player1: game.player1,
+	  player2: game.player2,
+	  shuf: game.shuf,
+	  cards: game.cards,
+	  deck: game.deck,
+	  drawn: game.drawn,
+	  deckCount: game.deckCount, 
+	  prev: game.prev,
+	  turn: game.turn,
+	  discarded: game.discarded,
+	  p1count: game.p1count,
+	  p2count: game.p2count,
+	  ids: game.ids,
+	  lastMove: game.lastMove,
+	  round: game.round,
+	  winner: game.winner
+    }
  end
 
 

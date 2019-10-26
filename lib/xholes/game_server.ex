@@ -72,6 +72,14 @@ defmodule Xholes.GameServer do
   def nextRound(name, round1) do
     GenServer.call(reg(name), {:nextRound, name, round1})
   end
+  
+  def winner(name, winner1) do
+    GenServer.call(reg(name), {:winner, name, winner1})
+  end
+  
+  def rejoin(name, player) do
+    GenServer.call(reg(name), {:rejoin, name, player})
+  end
 
   def peek(name) do
     GenServer.call(reg(name), {:peek, name})
@@ -151,6 +159,19 @@ def handle_call({:swap, name,cards1, post1, post2, deck1, dp1, dp2}, _from, game
   
    def handle_call({:nextRound, name, round1}, _from, game) do
     game = Xholes.Game.nextRound(game , round1)
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+  def handle_call({:winner, name, winner1}, _from, game) do
+    game = Xholes.Game.winner(game , winner1)
+    Xholes.BackupAgent.put(name, game)
+    {:reply, game, game}
+  end
+  
+  def handle_call({:rejoin, name, player}, _from, game) do
+    game = Xholes.Game.new();
+    game = Xholes.Game.setPlayer(game, player);
     Xholes.BackupAgent.put(name, game)
     {:reply, game, game}
   end

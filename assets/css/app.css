@@ -4,7 +4,7 @@
 @import "~milligram/dist/milligram";
 
 .row > p {
-    padding-top: 10ex;
+    padding-top: 0ex;
     padding-left: 5ex;
     text-align: center;
 }
@@ -16,7 +16,7 @@
 }
 
 .column > p {
-    padding-top: 10ex;
+    padding-top: 0ex;
     text-align: center;
 }
 

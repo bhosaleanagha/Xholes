@@ -118,7 +118,22 @@ def handle_in("cardDrawn", %{"deck" => d1, "deckCount" => dc, "drawn" => d, "pre
  	name = socket.assigns[:name]	
     game = GameServer.nextRound(name, round1)
     socket = assign(socket, :game, game)
-    IO.puts(game.round)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
+  end
+  
+  def handle_in("winner", %{"winner" => winner1}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.winner(name, winner1)
+    socket = assign(socket, :game, game)
+    broadcast!(socket,"update",%{"game" => Game.client_view(game)})
+    {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
+  end
+  
+  def handle_in("rejoin", %{"player" => player}, socket) do
+ 	name = socket.assigns[:name]	
+    game = GameServer.rejoin(name, player)
+    socket = assign(socket, :game, game)
     broadcast!(socket,"update",%{"game" => Game.client_view(game)})
     {:reply, {:ok, %{"game" => Game.client_view(game) }}, socket}
   end
